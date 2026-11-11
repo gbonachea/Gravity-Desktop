@@ -1,0 +1,63 @@
+#!/bin/sh
+# ==============================================================================
+# Stellar Shell — lanzador de sesión Wayland para el gestor de inicio (SDDM/GDM)
+#
+# Se invoca desde /usr/share/wayland-sessions/stellar.desktop. Prepara el
+# entorno, genera la configuración de Hyprland y arranca el compositor.
+# ==============================================================================
+set -u
+
+export XDG_SESSION_TYPE=wayland
+export XDG_CURRENT_DESKTOP=Stellar
+export XDG_SESSION_DESKTOP=Stellar
+export XCURSOR_THEME=breeze_cursors
+export XCURSOR_SIZE=24
+
+# Aplica el tema de iconos y cursor de Stellar a todo el escritorio.
+if command -v gsettings >/dev/null 2>&1; then
+    gsettings set org.gnome.desktop.interface icon-theme 'DamaDamas' >/dev/null 2>&1 || true
+    gsettings set org.gnome.desktop.interface cursor-theme 'breeze_cursors' >/dev/null 2>&1 || true
+    gsettings set org.gnome.desktop.interface cursor-size 24 >/dev/null 2>&1 || true
+fi
+
+# GTK 3/4
+for ver in 3.0 4.0; do
+    gtk_dir="${XDG_CONFIG_HOME:-$HOME/.config}/gtk-$ver"
+    mkdir -p "$gtk_dir" 2>/dev/null || true
+    if [ -f "$gtk_dir/settings.ini" ] && grep -q '^gtk-icon-theme-name=' "$gtk_dir/settings.ini"; then
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name=DamaDamas/' "$gtk_dir/settings.ini"
+    else
+        printf '[Settings]\ngtk-icon-theme-name=DamaDamas\ngtk-cursor-theme-name=breeze_cursors\ngtk-cursor-theme-size=24\n' >> "$gtk_dir/settings.ini"
+    fi
+done
+
+# KDE/Plasma apps
+if command -v kwriteconfig6 >/dev/null 2>&1; then
+    kwriteconfig6 --file kdeglobals --group Icons --key Theme DamaDamas 2>/dev/null || true
+    kwriteconfig6 --file kcminputrc --group Mouse --key cursorTheme breeze_cursors 2>/dev/null || true
+fi
+
+log_dir="${XDG_STATE_HOME:-$HOME/.local/state}/stellar"
+mkdir -p "$log_dir" 2>/dev/null || true
+exec >>"$log_dir/session.log" 2>&1
+echo "=== Stellar Shell session $(date -Is) ==="
+
+# Configura Hyprland sin bloquear el arranque si algo falla.
+if command -v stellar-autostart >/dev/null 2>&1; then
+    stellar-autostart --configure-only || echo "stellar-autostart falló; se continúa"
+else
+    echo "stellar-autostart no encontrado"
+fi
+
+# start-hyprland reinicia Hyprland si sale de forma anormal y es el lanzador
+# recomendado por el paquete de Hyprland.
+if command -v start-hyprland >/dev/null 2>&1; then
+    exec start-hyprland "$@"
+fi
+
+if command -v hyprland >/dev/null 2>&1; then
+    exec hyprland "$@"
+fi
+
+echo "No se encontró Hyprland"
+exit 1

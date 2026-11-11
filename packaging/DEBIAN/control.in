@@ -1,0 +1,23 @@
+Package: @PKGNAME@
+Version: @VERSION@
+Section: x11
+Priority: optional
+Architecture: @ARCH@
+Maintainer: Stellar Shell <stellar@localhost>
+Installed-Size: @SIZE@
+Depends: libc6, libstdc++6, libqt6core6, libqt6gui6, libqt6quick6,
+ libqt6qml6, libqt6dbus6, libqt6network6, libqt6opengl6,
+ qml6-module-qtquick, qml6-module-qtquick-controls,
+ qml6-module-qtquick-layouts, qml6-module-qtquick-effects,
+ qml6-module-qtquick-window, qml6-module-qtqml-workerscript,
+ liblayershellqtinterface6, libwayland-client0, breeze-cursor-theme,
+ systemd, libpam0g, @WMDEP@
+Recommends: pipewire, wireplumber, network-manager,
+ power-profiles-daemon, pulseaudio-utils, x11-xserver-utils,
+ x11-xkb-utils, libglib2.0-bin, xdg-utils, util-linux,
+ udisks2, bluez, cups-client
+Description: Stellar Shell, escritorio Wayland glassmorphism / XP remasterizado
+ Stellar Shell es un escritorio ligero para Wayland con estética
+ glassmorphism y Windows XP remasterizado. Incluye panel inferior,
+ menú Inicio, widgets, centro de configuración y arranque automático
+ para Hyprland, Wayfire, labwc y KWin.

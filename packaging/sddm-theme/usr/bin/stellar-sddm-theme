@@ -1,0 +1,11 @@
+#!/bin/sh
+# Activa el tema SDDM de Stellar Shell (requiere root).
+set -e
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Ejecuta este script con sudo." >&2
+    exit 1
+fi
+mkdir -p /etc/sddm.conf.d
+printf '[Theme]\nCurrent=stellar\n' > /etc/sddm.conf.d/20-stellar-theme.conf
+echo "Tema SDDM 'stellar' activado."
+echo "Reinicia SDDM o el equipo para verlo (p. ej. sudo systemctl restart sddm)."

@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "configure" ]; then
+    # Activa el tema. sddm es una dependencia dura del paquete, pero se
+    # comprueba igualmente para no romper instalaciones parciales.
+    if command -v sddm >/dev/null 2>&1 || [ -x /usr/bin/sddm ] || [ -x /usr/sbin/sddm ]; then
+        mkdir -p /etc/sddm.conf.d
+        printf '[Theme]\nCurrent=stellar\n' > /etc/sddm.conf.d/20-stellar-theme.conf
+        echo "Stellar SDDM: tema 'stellar' activado (se aplicará al reiniciar SDDM)."
+    fi
+fi
+
+exit 0

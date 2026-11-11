@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Single entry point used by Hyprland's exec-once and by stellar-autostart.
+# It simply forwards to run-stellar.sh, which resolves the four binaries.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+exec "${SCRIPT_DIR}/run-stellar.sh" "$@"

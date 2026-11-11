@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Stellar Shell (labwc)
+Comment=Escritorio Stellar Shell sobre labwc
+Exec=/usr/bin/stellar-session-labwc
+Type=Application
+DesktopNames=labwc;Stellar;
+Keywords=stellar;labwc;wayland;desktop;

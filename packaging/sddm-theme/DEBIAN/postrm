@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+# Al desinstalar, retira la activación solo si sigue apuntando a este tema.
+if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+    if [ -f /etc/sddm.conf.d/20-stellar-theme.conf ] \
+        && grep -q '^Current=stellar$' /etc/sddm.conf.d/20-stellar-theme.conf 2>/dev/null; then
+        rm -f /etc/sddm.conf.d/20-stellar-theme.conf
+        echo "Stellar SDDM: activación del tema retirada."
+    fi
+fi
+
+exit 0

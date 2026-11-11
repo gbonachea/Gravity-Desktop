@@ -1,0 +1,24 @@
+#!/bin/sh
+set -e
+
+# Asegura permisos de ejecución (dpkg normalmente ya los conserva).
+chmod +x /usr/bin/stellar-background \
+         /usr/bin/stellar-panel \
+         /usr/bin/stellar-menu \
+         /usr/bin/stellar-widgets \
+         /usr/bin/stellar-settings \
+         /usr/bin/stellar-ui \
+         /usr/bin/run-stellar.sh \
+         /usr/bin/stellar-autostart* 2>/dev/null || true
+
+if command -v update-desktop-database >/dev/null 2>&1; then
+    update-desktop-database -q /usr/share/applications || true
+fi
+
+# El tema de SDDM se instala y activa con el paquete stellar-sddm-theme.
+
+if command -v update-mime-database >/dev/null 2>&1; then
+    update-mime-database /usr/share/mime >/dev/null 2>&1 || true
+fi
+
+exit 0

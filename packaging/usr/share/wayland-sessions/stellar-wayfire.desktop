@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Stellar Shell (Wayfire)
+Comment=Escritorio Stellar Shell sobre Wayfire
+Exec=/usr/bin/stellar-session-wayfire
+Type=Application
+DesktopNames=Wayfire;Stellar;
+Keywords=stellar;wayfire;wayland;desktop;

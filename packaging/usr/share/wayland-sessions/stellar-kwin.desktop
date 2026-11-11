@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Stellar Shell (KWin)
+Comment=Escritorio Stellar Shell sobre KWin Wayland
+Exec=/usr/bin/stellar-session-kwin
+Type=Application
+DesktopNames=KDE;Stellar;
+Keywords=stellar;kwin;wayland;desktop;

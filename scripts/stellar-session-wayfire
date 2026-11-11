@@ -1,0 +1,48 @@
+#!/bin/sh
+# ==============================================================================
+# Stellar Shell — lanzador de sesión Wayland para Wayfire (SDDM/GDM)
+# ==============================================================================
+set -u
+
+export XDG_SESSION_TYPE=wayland
+export XDG_CURRENT_DESKTOP=Stellar
+export XDG_SESSION_DESKTOP=Stellar
+export XCURSOR_THEME=breeze_cursors
+export XCURSOR_SIZE=24
+
+if command -v gsettings >/dev/null 2>&1; then
+    gsettings set org.gnome.desktop.interface icon-theme 'DamaDamas' >/dev/null 2>&1 || true
+    gsettings set org.gnome.desktop.interface cursor-theme 'breeze_cursors' >/dev/null 2>&1 || true
+    gsettings set org.gnome.desktop.interface cursor-size 24 >/dev/null 2>&1 || true
+fi
+
+for ver in 3.0 4.0; do
+    gtk_dir="${XDG_CONFIG_HOME:-$HOME/.config}/gtk-$ver"
+    mkdir -p "$gtk_dir" 2>/dev/null || true
+    if [ -f "$gtk_dir/settings.ini" ] && grep -q '^gtk-icon-theme-name=' "$gtk_dir/settings.ini"; then
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name=DamaDamas/' "$gtk_dir/settings.ini"
+    else
+        printf '[Settings]\ngtk-icon-theme-name=DamaDamas\ngtk-cursor-theme-name=breeze_cursors\ngtk-cursor-theme-size=24\n' >> "$gtk_dir/settings.ini"
+    fi
+done
+
+if command -v kwriteconfig6 >/dev/null 2>&1; then
+    kwriteconfig6 --file kdeglobals --group Icons --key Theme DamaDamas 2>/dev/null || true
+    kwriteconfig6 --file kcminputrc --group Mouse --key cursorTheme breeze_cursors 2>/dev/null || true
+fi
+
+log_dir="${XDG_STATE_HOME:-$HOME/.local/state}/stellar"
+mkdir -p "$log_dir" 2>/dev/null || true
+exec >>"$log_dir/session-wayfire.log" 2>&1
+echo "=== Stellar Shell Wayfire session $(date -Is) ==="
+
+if command -v stellar-autostart-wayfire >/dev/null 2>&1; then
+    stellar-autostart-wayfire --configure-only || echo "stellar-autostart-wayfire falló; se continúa"
+fi
+
+if command -v wayfire >/dev/null 2>&1; then
+    exec wayfire "$@"
+fi
+
+echo "No se encontró Wayfire"
+exit 1

@@ -1,0 +1,22 @@
+#!/bin/sh
+# Minimiza la ventana activa de Hyprland al workspace 99 y mantiene el foco
+# en el workspace actual. Usado por el botón de minimizar de hyprbars.
+set -u
+
+command -v hyprctl >/dev/null 2>&1 || exit 0
+
+ws="$(hyprctl activeworkspace -j 2>/dev/null | sed -n 's/.*"name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n1)"
+addr="$(hyprctl activewindow -j 2>/dev/null | sed -n 's/.*"address"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n1)"
+
+[ -n "$addr" ] || exit 0
+case "$ws" in
+    99) exit 0 ;;
+esac
+
+hyprctl dispatch movetoworkspacesilent "99,address:$addr" >/dev/null 2>&1
+if [ -n "$ws" ]; then
+    hyprctl dispatch workspace "$ws" >/dev/null 2>&1
+fi
+
+# El panel detecta el estado minimizado por sí mismo (sondea hyprctl y ve la
+# ventana en el workspace 99), así que no hace falta registrar la dirección.

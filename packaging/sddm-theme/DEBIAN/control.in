@@ -1,0 +1,16 @@
+Package: @PKGNAME@
+Version: @VERSION@
+Section: x11
+Priority: optional
+Architecture: @ARCH@
+Maintainer: Stellar Shell <stellar@localhost>
+Installed-Size: @SIZE@
+Depends: sddm, qml6-module-qtquick, qml6-module-qtquick-controls,
+ qml6-module-qtquick-templates, qml6-module-qtquick-layouts,
+ qml6-module-qtqml-workerscript
+Recommends: fonts-dejavu-core
+Description: Tema de inicio de sesión SDDM de Stellar Shell
+ Tema gráfico para SDDM con la estética glassmorphism del escritorio
+ Stellar Shell. Incluye el formulario de acceso, el selector de sesión
+ y los botones de apagado, reinicio y suspensión. Al instalarlo se
+ activa automáticamente en /etc/sddm.conf.d.

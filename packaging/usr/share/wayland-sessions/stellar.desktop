@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Stellar Shell (Hyprland)
+Comment=Escritorio Stellar Shell sobre Hyprland
+Exec=/usr/bin/stellar-session
+Type=Application
+DesktopNames=Hyprland;Stellar;
+Keywords=stellar;hyprland;wayland;desktop;
