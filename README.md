@@ -1,5 +1,8 @@
 # Stellar Shell
 
+<img width="1920" height="1080" alt="Captura_de_tela_20261110_233008" src="https://github.com/user-attachments/assets/4f455d77-9e5f-430b-bda9-86b394d42956" />
+
+
 Shell de escritorio para Wayland con estética **glassmorphism + Windows XP remasterizado**,
 escrito en C++20 y QML (Qt 6). Está compuesto por cuatro ejecutables independientes que
 comparten un backend y una librería de componentes QML:
